@@ -19,6 +19,7 @@ mean_median_curves <- function(brier_dfs, times) {
   return(a)
 }
 
+
 ## Plot settings
 theme_set(theme_bw() +
             theme(axis.text = element_text(size=12),
@@ -37,7 +38,6 @@ plot_brier_curves <- function(b, title, ylim_up = 1) {
     ylim(c(0,ylim_up)) +
     xlab("Time") + ylab("Prediction error") + ggtitle(title) 
 }
-
 
 plot_all_briers <- function(b0,b1,b2,b3,b4,b5,b6, stat = "median", ylim_up = 0.4, splitMethod, times) {
   st <- ifelse(stat=="median", "brier_median", "brier_mean")
