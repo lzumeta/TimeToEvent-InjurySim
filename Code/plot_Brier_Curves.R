@@ -11,7 +11,7 @@ mean_median_curves <- function(brier_dfs, times) {
   a <- NULL  ##  empty dataframe
   a$brier_mean   <- colMeans(brier_dfs, na.rm = T)
   a$brier_median <- apply(brier_dfs, 2, median, na.rm = T)
-  a$brier_2.5 <- apply(brier_dfs, 2, function(x) quantile(x, probs = 0.025, na.rm = T))
+  a$brier_2.5  <- apply(brier_dfs, 2, function(x) quantile(x, probs = 0.025, na.rm = T))
   a$brier_97.5 <- apply(brier_dfs, 2, function(x) quantile(x, probs = 0.975, na.rm = T))
   a <- as.data.frame(a)
   a$Brier_time <- times
