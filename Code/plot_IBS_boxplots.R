@@ -1,3 +1,7 @@
+library(tidyverse)
+library(purrr)
+library(magrittr)
+library(pec)
 
 
 plot_IBS_boxplots <- function(pec_bess, pec_lasso, pec_enet, pec_ridge, 
@@ -6,7 +10,7 @@ plot_IBS_boxplots <- function(pec_bess, pec_lasso, pec_enet, pec_ridge,
   times <- pec_bess[[1]]$time
   tmax <- max(times)
   
-  ## if there are errors
+  ## check any convergence problem
   any_try_error <- function(pec) {
     idx <- lapply(pec, function(x) class(x) == "try-error") %>% unlist() %>% which
     if (length(idx)) pec <-  pec[-idx] 
@@ -46,7 +50,6 @@ plot_IBS_boxplots <- function(pec_bess, pec_lasso, pec_enet, pec_ridge,
   ibs_ridge_ref <- ibs_ridge[seq(1,nrow(ibs_ridge), by = 2),]
   ibs_ridge <- ibs_ridge[seq(2,nrow(ibs_ridge), by = 2),]
   
-  
   ibs_grouplasso <- map(pec_grouplasso, function(elem) ibs(elem)) %>% reduce(rbind)
   ibs_grouplasso_ref <- ibs_grouplasso[seq(1,nrow(ibs_grouplasso), by = 2),]
   ibs_grouplasso <- ibs_grouplasso[seq(2,nrow(ibs_grouplasso), by = 2),]
@@ -56,7 +59,7 @@ plot_IBS_boxplots <- function(pec_bess, pec_lasso, pec_enet, pec_ridge,
   ibs_coxboost <- ibs_coxboost[seq(2,nrow(ibs_coxboost), by = 2),]
   
   
-  ## if there are NAs assign random guess
+  ## assign worst IBS value to models that couldn't be fitted
   imput_worst_ibs <- function(ibs) {
     if (any(is.na(ibs))) ibs[is.na(ibs)] <- 0.25
     return(ibs)
@@ -88,12 +91,14 @@ plot_IBS_boxplots <- function(pec_bess, pec_lasso, pec_enet, pec_ridge,
   ibs_ridge <-  add_try_error(ibs_ridge)
   ibs_grouplasso <- add_try_error(ibs_grouplasso)
   ibs_coxboost <-  add_try_error(ibs_coxboost)
+  ##
   
-  
+  ## Create data
   ibs_data <- data.frame(BeSS = ibs_bess[, splitMethod], Lasso = ibs_lasso[, splitMethod], Enet = ibs_enet[, splitMethod],
                          Ridge = ibs_ridge[,splitMethod], GroupLasso = ibs_grouplasso[, splitMethod],
                          CoxBoost = ibs_coxboost[, splitMethod])
   
+  ## Plot
   p <- ibs_data %>%
     gather(key = Model, value = ibs) %>%
     mutate(Model = factor(Model, levels = c("BeSS", "Lasso", "Enet", "Ridge", "GroupLasso", "CoxBoost"))) %>% 

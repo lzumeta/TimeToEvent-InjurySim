@@ -1,17 +1,10 @@
-# Figure to compare IBS performance for varying data size and scenarios:
+# Figure to compare IBS performance for varying data size and scenarios
 
-library(tidyverse)
-library(ggpubr)
-library(coxed)
-library(survival)
-library(pec) #  predictSurvProb
 library(ggplot2)
 library(gridExtra)
-library(InformationValue)
 library(RColorBrewer)
+library(ggpubr)
 
-
-# Source
 source("Code/plot_IBS_boxplots.R")
 
 
@@ -55,6 +48,6 @@ plot <- ggarrange(plot3, plot1, plot2, plot4, plot7, plot5, plot6, plot8,
 plot <- annotate_figure(plot,
                         left = text_grob("IBS", size = 20, rot = 90),
 )
-ggexport(plot, filename = "Figures/IBS_boxplots_simulations.pdf", width = 12, height = 8)
+ggexport(plot, filename = "Figures/IBS_boxplots.pdf", width = 12, height = 8)
 
 
