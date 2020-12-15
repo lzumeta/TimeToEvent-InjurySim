@@ -1,3 +1,9 @@
+library(ggplot2)
+library(magrittr)
+library(purrr)
+library(gridExtra)
+
+
 mean_median_curves <- function(brier_dfs, times) {
   
   brier_dfs <- brier_dfs %>% reduce(rbind)
@@ -14,7 +20,6 @@ mean_median_curves <- function(brier_dfs, times) {
 }
 
 ## Plot settings
-
 theme_set(theme_bw() +
             theme(axis.text = element_text(size=12),
                   axis.title = element_text(size=14),
@@ -32,6 +37,7 @@ plot_brier_curves <- function(b, title, ylim_up = 1) {
     ylim(c(0,ylim_up)) +
     xlab("Time") + ylab("Prediction error") + ggtitle(title) 
 }
+
 
 plot_all_briers <- function(b0,b1,b2,b3,b4,b5,b6, stat = "median", ylim_up = 0.4, splitMethod, times) {
   st <- ifelse(stat=="median", "brier_median", "brier_mean")
@@ -56,7 +62,7 @@ plot_all_briers <- function(b0,b1,b2,b3,b4,b5,b6, stat = "median", ylim_up = 0.4
 ## Main plot function
 plot_Brier_Curves <- function(pec_bess, pec_lasso, pec_enet, pec_ridge, pec_grouplasso, pec_coxboost, splitMethod) {
   
-  ## if there are errors
+  ## check any convergence problem
   any_try_error <- function(pec) {
     idx <- lapply(pec, function(x) class(x) == "try-error") %>% unlist() %>% which
     if (length(idx)) pec <-  pec[-idx] 
@@ -70,7 +76,7 @@ plot_Brier_Curves <- function(pec_bess, pec_lasso, pec_enet, pec_ridge, pec_grou
   pec_grouplasso <- any_try_error(pec_grouplasso)
   pec_coxboost <- any_try_error(pec_coxboost)
   
-  ## extract resutls Boot632plus -----
+  ## extractBoot632plus brier curves
   times <- pec_bess[[1]]$time
   briers_ref   <- map(pec_bess, function(elem) elem[[splitMethod]][["Reference"]])
   briers_bess  <- map(pec_bess, function(elem) elem[[splitMethod]][[2]]) ## 2 = coxph.penal or coxph
@@ -80,6 +86,8 @@ plot_Brier_Curves <- function(pec_bess, pec_lasso, pec_enet, pec_ridge, pec_grou
   briers_grouplasso <- map(pec_grouplasso, function(elem) elem[[splitMethod]][[2]])
   briers_coxboost <- map(pec_coxboost, function(elem) elem[[splitMethod]][[2]])
   
+  
+  ## assign worst brier socre value to models that couldn't be fitted, const curves
   add_try_error <- function(briers) {
     n <- length(briers)
     if (n < 100) {
@@ -97,6 +105,7 @@ plot_Brier_Curves <- function(pec_bess, pec_lasso, pec_enet, pec_ridge, pec_grou
   briers_ridge <-  add_try_error(briers_ridge)
   briers_grouplasso <- add_try_error(briers_grouplasso)
   briers_coxboost <-  add_try_error(briers_coxboost)
+  ##
   
   ## Calculate median, mean curves
   #b0 <- mean_median_curves(briers_reference); a0 <- b0[[1]]; b0 <- b0[[2]] 
@@ -106,13 +115,14 @@ plot_Brier_Curves <- function(pec_bess, pec_lasso, pec_enet, pec_ridge, pec_grou
   b4 <- mean_median_curves(briers_ridge, times);  
   b5 <- mean_median_curves(briers_grouplasso, times);
   b6 <- mean_median_curves(briers_coxboost, times);
-  #b5 <- mean_median_curves(briers_rpart, times);    
+  
   ylim_up <- lapply(list(briers_bess, briers_lasso, briers_enet, briers_ridge, 
                          briers_grouplasso, briers_coxboost),
                     function(l) reduce(l, rbind)) %>% 
     reduce(rbind) %>% 
     max
   
+  ## Plots
   p1 <- plot_brier_curves(b1, paste0(splitMethod, " Brier Score of\nBeSS method"), ylim_up = ylim_up)
   p2 <- plot_brier_curves(b2, paste0(splitMethod, " Brier Score of\nLasso method"), ylim_up = ylim_up)
   p3 <- plot_brier_curves(b3, paste0(splitMethod, " Brier Score of\nElastic net method"), ylim_up = ylim_up)
