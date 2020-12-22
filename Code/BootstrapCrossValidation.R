@@ -1,5 +1,5 @@
 #### This code rewrites the function "bootrstrapCrossValidation" from
-#### package "pec".
+#### package "pec". https://cran.r-project.org/web/packages/pec/index.html
 
 my_bootstrapCrossValidation <- function(object,
                                         data,
@@ -173,10 +173,10 @@ my_bootstrapCrossValidation <- function(object,
       PredErrStepB=lapply(Residuals,function(x){colMeans(x)})
     }
     else{
-      PredErrStepB <- lapply(predVal,function(pred.b){
+      PredErrStepB <- lapply(predVal,function(pred.b){ 
         if (is.null(pred.b))
           #NA
-          pecOut <- rep(0.25, NT) ## NT = length(times)
+          pecOut <- rep(0.25, NT) ## NT = length(times) 
         else{
           if (predictHandlerFun=="predictEventProb")
             pecOut <- .C("pecCR",
