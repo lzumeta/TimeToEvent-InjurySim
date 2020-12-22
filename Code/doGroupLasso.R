@@ -6,7 +6,7 @@ doGroupLasso <- function(dfs, vars, group) {
     
     set.seed(16)
     flds <- createFolds(y, k = 10, list = TRUE, returnTrain = FALSE) ## to always obtain the same results
-    foldids = rep(1,length(y))
+    foldids <- rep(1,length(y))
     foldids[flds$Fold02] = 2; foldids[flds$Fold03] = 3; foldids[flds$Fold04] = 4; foldids[flds$Fold05] = 5; foldids[flds$Fold06] = 6; 
     foldids[flds$Fold07] = 7; foldids[flds$Fold08] = 8; foldids[flds$Fold09] = 9; foldids[flds$Fol10] = 10
     
@@ -24,3 +24,6 @@ doGroupLasso <- function(dfs, vars, group) {
   
   return(list(coefs = coefs, lambdas = lambda_mins))
 }
+
+
+
