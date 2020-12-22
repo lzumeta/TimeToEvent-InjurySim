@@ -1,12 +1,9 @@
-######################## Main_predictive_capacity2.R #############################
-## This file computes predictive capacity measures for each of the method over
-## all the iteration, Nsim, of the simulation. Predictive performance measures
-## such as, time-dependent Brier Score or the prediction error, time-dependent
-## Uno's C-index and AUC. Also it computes the reference model, the model
-## with no covariate, and computes the mentioned measures. For the sake of
-## comparison, the reference model is just for evaluating wether doing 
-## variable selection is worth it or not.
-##
+######################## Main_predictive_capacity.R #############################
+## It computes time prediction error curves (pec-s) or also known as, 
+## time-dependent Brier Score-s, for each frailty model fitted.
+## We use Boot632plus method for validating this predictive capacity. This is a
+## linear combination of AppErr and BootCv using weights dependent on how the
+## models perform in permuted data
 ################################################################################
 
 
@@ -20,6 +17,7 @@ source("Code/predictSurvProb.R") ## to predict coxph.penal models
 source("Code/BootstrapCrossValidation.R")
 
 ## vector of times: every model is evaluated at the same time points
+## final follow-up times are not considered, since Brier Score is not stable at these points
 times <- round(seq(10, Tmax - 200, length.out = 1000))
 
 
