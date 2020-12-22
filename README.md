@@ -15,5 +15,5 @@ It is to be noted that the code have dependencies, it open sources two **R** pac
   * Scenario3
 
  - Figures
-  * Scenario2
-  * Scenario3
+   * Scenario2
+   * Scenario3
