@@ -1,4 +1,4 @@
-## Functions for performance measures -------------------------------
+
 myMeans <- function(coefs) {
   return(colMeans(coefs))
 }
@@ -16,4 +16,3 @@ myCoverage <- function(low, up, true_beta) {
   coefs.coverage <- t(lowlimit == uplimit)
   return(coefs.coverage)
 }
-##
