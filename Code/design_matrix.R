@@ -15,18 +15,15 @@
 ## OUTPUT: X design matrix of dim Nobs x xvars
 
 ## Function structure: two if blocks. According to Scenario2, Scenario 3 and Scenario 1. 
-## Scenario 2 creates first a matrix of Nobs x inf_vars, each column following either a 
-## normal, uniform, gamma, poisson or binomial distribution. Then the rest of noise vars
-## are drawn from a normal distribution and these two matrices are put together. Scenario 3
-## we create a pre-specified covariance structure, see covM, and using this matrix as the 
-## Sigma (cov-var matrix) of a multivariate normal distribution we draw a small design_matrix
-## X^* of cluster x xvars. Then we create duplicates of rows according to the number of 
-## observations per each player. This way we mimic the real data set as close as possible. 
-## We add some random noise to these vectors. Finally, there is a last block where we categorize
-## every 4th column according to its median. Scenario 1, needs two additional arguments: data 
-## and augmented_rows. Original data is replicated according to the vector augmented_rows and 
-## then a noise is added to each row taking  into account whether the column is continuous or 
-## categorical variable.
+## For Scenario 2 and Scenario 3 we create a pre-specified covariance structure, see covM, 
+## and using this matrix as the Sigma (cov-var) matrix of a multivariate normal distribution 
+## we draw a small design_matrix X* of dimension (cluster x xvars). Then we create duplicates 
+## of the rows according to the number of observations per each player and we add some random 
+## noise to these vectors. This way we mimic the real data set as close as possible, since
+## these rows can be thought to be coming from the same player. 
+## Scenario 1, needs two additional arguments: data and augmented_rows. 
+## Original data is replicated according to the vector augmented_rows and then a noise is added 
+## to each row taking  into account whether the column is continuous or categorical variable.
 ######################################################################################################
 
 
@@ -144,7 +141,7 @@ design_matrix <- function(scenario, xvars, noise, Nobs, cluster_sizes,
     X$w <- rep(x = dd$w, each = cluster_sizes[[1]])
   }
   
-  ## Return of the resulting data.frame:
+  ## Return of the resulting data.frame
   return(X) 
 }
 
