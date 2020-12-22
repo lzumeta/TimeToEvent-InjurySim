@@ -11,12 +11,19 @@
 ################################################################################
 
 
+## Packages ---------------------------------------------------------------------
+library(MASS)
+library(tidyverse)
+library(furrr)
+
+
 ## Functions --------------------------------------------------------------------
 ## Sourcing of needed functions:
 source("Code/design_matrix.R")
 source("Code/mysim_survdata.R")
 
-## 1) Design matrix -----
+
+## 1) Design matrix -------------------------------------------------------------
 cat("Generating design matix X... \n\n")
 if (scenario == "Scenario 1") { 
   if (var_method == "RPART") {   ## NOT USED  (....for Scenario 4, true model: rpart)
@@ -51,7 +58,7 @@ if (scenario == "Scenario 1") {
 }
 
 
-## 2) Simulate data -----
+## 2) Simulate data ---------------------------------------------------------
 cat("Generating Nsim, ", Nsim, "data sets... \n\n")
 dfs <- mysim_survdata(Nobs, Tmax, Nsim, xvars, true_beta, censorship, knots, X,
                       frailty = frailty, cluster.num = cluster_num, cluster.sizes = cluster_sizes,
@@ -66,12 +73,12 @@ rm(X, w, vs, idx, baseline.build, censor.x,
    NK_clusters, sim.survdata, train_test, user.baseline)
 
 
-## 3) Variable selection -----
+## 3) Variable selection ---------------------------------------------------
 cat("Starting variable selection... \n\n")
 source("Code/Main_variable_selection.R")
 
 
-## 4) Predictive measures -----
+## 4) Predictive measures --------------------------------------------------
 cat("Starting calculation of predictive measures... \n\n")
 print(system.time({source("Code/Main_predictive_capacity.R")}))
 save(pecBoot632plus_bess, pecBoot632plus_lasso, pecBoot632plus_enet, pecBoot632plus_ridge, 
@@ -81,6 +88,7 @@ cat("SAVED!: ", dir, "pecBoot632plus_", name, ".rds\n\n")
 
 rm(pecBoot632plus_bess, pecBoot632plus_lasso, pecBoot632plus_enet, pecBoot632plus_ridge, 
    pecBoot632plus_grouplasso, pecBoot632plus_coxboost)
+
 
 ## 5) Plot the results -----
 source("Code/plot_selectedVars.R")
