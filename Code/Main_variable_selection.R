@@ -1,20 +1,29 @@
 ######################## Main_variable_selection.R ##############################
-## This file computes the proposed variables selection methods for all training 
-## sets (e.g. Nsim = 100 sets) produced, in the previous step. Methods of
-## penalized Cox regression, including best subset selection, lasso, elastic net, 
-## ridge regression and the tree-based rpart method.
+## This file computes the proposed variables selection methods for all data
+## sets (e.g. Nsim = 100 sets) generated in the previous step. These include
+## Best Subset Selection, Lasso, Elastic Net, Ridge regression, 
 ##
-## Functions used: doBeSS, doRegularization, doRpart, 
+## Functions used: doBeSS, doRegularization, doGroupLasso and doCoxBoost
 ##                in myFunctions: myMeans, myBias, myCoverage (now not used)
 ################################################################################
 
+
+## Packages --------------------------------------------------------------------
+library(BeSS) # Version 1.06 (important)
+library(glmnet)
+library(grpreg)
+library(CoxBoost)
+library(tidyverse)
+library(purrr)
+library(caret)
+
+
 ## Functions -------------------------------------------------------------------
-## sourcing of needed functions
-source("Codes/Simulations/doBeSS.R")
-source("Codes/Simulations/doRegularization.R")
-source("Codes/Simulations/doGroupLasso.R")
-source("Codes/Simulations/doCoxBoost.R")
-source("Codes/Simulations/myFunctions.R")
+source("Code/doBeSS.R")
+source("Code/doRegularization.R")
+source("Code/doGroupLasso.R")
+source("Code/doCoxBoost.R")
+source("Code/myFunctions.R")
 
 
 plan(multisession)
@@ -195,4 +204,6 @@ cat("SAVED!: ", dir, "VarsCoxBoost_", name, ".rds\n\n")
 rm(doBeSS, doRegularization, doGroupLasso, doCoxBoost, 
    bootstrap_regularization, get.enet.coef, 
    myBias, myMeans, myCoverage)
+
+
 
