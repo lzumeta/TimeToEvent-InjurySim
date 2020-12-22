@@ -10,13 +10,18 @@
 ################################################################################
 
 
+## Packages --------------------------------------------------------------------
+library(survival)
+library(pec)
+
+
 ## Functions -------------------------------------------------------------------
-## sourcing of needed functions
 source("Code/predictSurvProb.R") ## to predict coxph.penal models 
 source("Code/BootstrapCrossValidation.R")
 
 ## vector of times: every model is evaluated at the same time points
 times <- round(seq(10, Tmax - 200, length.out = 1000))
+
 
 ## BeSS ------------------------------------------------------------------------
 cat("Calculating prediction error curves for BeSS.... \n\n")
@@ -35,7 +40,7 @@ fgaus_models_bess <- future_map2(vars.bess, dfs, function(var.bess, df) {
 }, .options = future_options(seed = 123456L)) 
 
 
-# plan(multisession) 
+# plan(multisession) ## (not working)
 # pecBoot632plus_bess <- future_pmap(list(dfs, fgaus_models_bess, vars.bess), function(df, model.bess, var.bess) {
 #   if(length(var) == 0) var.bess <- 1
 #   form <- paste0("Surv(time, status)~", paste0(var.bess, collapse = "+"), "+ frailty(id, distribution = 'gaussian')")
@@ -72,26 +77,6 @@ for (i in 1:Nsim) {
 }
 
 
-
-# peccv10_bess <- list()
-# for (i in 1:100) {
-#   cat("i = ", i, "\n\n")
-#   df <- dfs[[i]]
-#   model <- fgaus_models_bess[[i]]
-#   var <- vars.bess[[i]]
-#   if(length(var) == 0) var <- 1
-#   form <- paste0("Surv(time, status)~", paste0(var, collapse = "+"), "+ frailty(id, distribution = 'gaussian')")
-#   model[["formula"]] <- as.formula(form)
-#   peccv10_bess[[i]] <- pec(object=model,
-#                            formula=Surv(time,status)~1,
-#                            data=df,
-#                            times = times, exact =  F,
-#                            #exact=TRUE, maxtime = 2000,
-#                            cens.model="marginal",
-#                            splitMethod="cv10",
-#                            verbose= F)
-# }
-
 rm(est.bess, coefs.bess, vars.bess,
    fgaus_models_bess)
 
@@ -110,23 +95,6 @@ fgaus_models_lasso <- future_map2(vars.lasso, dfs, function(var.lasso, df) {
   
   return(m_lasso_fgaus)
 }, .options = future_options(seed = 123456L)) 
-
-
-## Pred error for all models built with variables that Lasso selected 
-# pecBoot632plus_lasso <- future_pmap(list(fgaus_models_lasso, dfs, vars.lasso), function(model.lasso, df, var.lasso) {
-#   if (length(var.lasso) == 0) var.lasso <- 1
-#   formula.lasso <- ifelse(is.null(model.lasso["frailties"]), paste0("Surv(time, status)~", paste0(var.lasso, collapse = "+")),
-#                  paste0("Surv(time, status)~", paste0(var.lasso, collapse = "+"), "+ frailty(id, distribution = 'gaussian')"))
-#   model.lasso[["formula"]] <- as.formula(formula.lasso)
-#   pec(object=model.lasso,
-#       formula=Surv(time,status)~1,
-#       data=df,
-#       times = times, exact = F,
-#       #exact=TRUE, maxtime = 2000,
-#       cens.model="marginal",
-#       splitMethod="Boot632plus", B = 100, # M = Nobs,
-#       verbose= F)
-# })
 
 
 pecBoot632plus_lasso <- vector("list", Nsim)
@@ -152,6 +120,7 @@ for (i in 1:Nsim) {
 rm(coefs.lasso, vars.lasso, ci95s.lasso, vars.lasso2,
    fgaus_models_lasso)
 
+
 ## Enet ------------------------------------------------------------------------
 cat("Calculating prediction error curves for Enet.... \n\n")
 load(paste0(dir, "VarsEnet_", name, ".rds"))
@@ -166,20 +135,6 @@ fgaus_models_enet <- future_map2(vars.enet05, dfs, function(var.enet, df) {
   return(m_enet_fgaus)
 }, .options = future_options(seed = 123456L)) 
 
-
-# pecBoot632plus_enet <- future_pmap(list(dfs, fgaus_models_enet, vars.enet05), function(df, model, var.enet05) {
-#   if(length(var.enet05) == 0) var.enet05 <- 1
-#   form <- paste0("Surv(time, status)~", paste0(var.enet05, collapse = "+"), "+ frailty(id, distribution = 'gaussian')")
-#   model[["formula"]] <- as.formula(form)
-#   pec(object=model,
-#       formula=Surv(time,status)~1,
-#       data=df,
-#       times = times, exact= F,
-#       #exact=TRUE, maxtime = 2000,
-#       cens.model="marginal",
-#       splitMethod="Boot632plus", B = 100,
-#       verbose= F)
-# })
 
 pecBoot632plus_enet <- vector("list", Nsim)
 for (i in 1:Nsim) {
@@ -198,21 +153,11 @@ for (i in 1:Nsim) {
                                       cens.model="marginal",
                                       splitMethod="Boot632plus", B = 100,
                                       verbose = F))
-  # while (is.na(ibs(pecBoot632plus_enet[[i]])[2,"Boot632plusErr"])) {
-  #     pecBoot632plus_enet[[i]] <- try(pec(object=model,
-  #                                         formula=Surv(time,status)~1,
-  #                                         data=df,
-  #                                         times = times, exact =  F,
-  #                                         #exact=TRUE, maxtime = 2000,
-  #                                         cens.model="marginal",
-  #                                         splitMethod="Boot632plus", B = 100,
-  #                                         verbose = F
-  #     ))
-  #   }
 }
 
 rm(coefs.enet05, vars.enet05, ci95s.enet05, vars.enet052,
    fgaus_models_enet)
+
 
 ## Ridge ------------------------------------------------------------------------
 cat("Calculating prediction error curves for Ridge.... \n\n")
@@ -228,19 +173,6 @@ fgaus_models_ridge <- future_map2(vars.ridge2, dfs, function(var.ridge, df) {
   return(m_ridge_fgaus)
 }, .options = future_options(seed = 123456L)) 
 
-# pecBoot632plus_ridge <- future_pmap(list(dfs, fgaus_models_ridge, vars.ridge2), function(df, model, var.ridge) {
-#   if(length(var.ridge) ==  0) var.ridge <- 1
-#   form <- paste0("Surv(time, status)~", paste0(var.ridge, collapse = "+"), "+ frailty(id, distribution = 'gaussian')")
-#   model[["formula"]] <- as.formula(form)
-#   pec(object=model,
-#       formula=Surv(time,status)~1,
-#       data=df,
-#       times = times, exact = F,
-#       #exact=TRUE, maxtime = 2000,
-#       cens.model="marginal",
-#       splitMethod="Boot632plus", B = 100,
-#       verbose= F)
-# })
 
 pecBoot632plus_ridge <- vector("list", Nsim)
 for (i in 1:Nsim) {
@@ -263,6 +195,7 @@ for (i in 1:Nsim) {
 
 rm(coefs.ridge, ci95s.ridge, vars.ridge, vars.ridge2,
    fgaus_models_ridge)
+
 
 ## GroupLasso ------------------------------------------------------------------------
 cat("Calculating prediction error curves for GroupLasso.... \n\n")
@@ -317,21 +250,6 @@ fgaus_models_coxboost <- future_map2(vars.coxboost, dfs, function(var.coxboost, 
 }, .options = future_options(seed = 123456L)) 
 
 
-# pecBoot632plus_coxboost <- future_pmap(list(dfs, fgaus_models_coxboost, vars.coxboost), function(df, model, var.coxboost) {
-#   if(length(var.coxboost) ==  0) var.coxboost <- 1
-#   form <- paste0("Surv(time, status)~", paste0(var.coxboost, collapse = "+"), "+ frailty(id, distribution = 'gaussian')")
-#   model[["formula"]] <- as.formula(form)
-#   pec(object=model,
-#       formula=Surv(time,status)~1,
-#       data=df,
-#       times = times, exact = F,
-#       #exact=TRUE, maxtime = 2000,
-#       cens.model="marginal",
-#       splitMethod="Boot632plus", B = 100,
-#       verbose= F)
-# })
-
-
 pecBoot632plus_coxboost <- vector("list", Nsim)
 for (i in 1:Nsim) {
   cat("i = ", i, "\n\n")
@@ -349,17 +267,6 @@ for (i in 1:Nsim) {
                                           cens.model="marginal",
                                           splitMethod="Boot632plus", B = 100,
                                           verbose= F))
-  # while (is.na(ibs(pecBoot632plus_coxboost[[i]])[2,"Boot632plusErr"])) {
-  #   pecBoot632plus_coxboost[[i]] <- try(pec(object=model,
-  #                                           formula=Surv(time,status)~1,
-  #                                           data=df,
-  #                                           times = times, exact =  F,
-  #                                           #exact=TRUE, maxtime = 2000,
-  #                                           cens.model="marginal",
-  #                                           splitMethod="Boot632plus", B = 30,
-  #                                           verbose = F
-  #   ))
-  # }
 }
 
 rm(coefs.coxboost, vars.coxboost,
