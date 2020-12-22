@@ -1,43 +1,11 @@
 ######################## SimulationSettings.R ###################################
-## Here we save all the settings used. We have many parameters so we
-## let written which is the configuration in every simulation that we run.
-## Above of each scenario we always set a seed to always reproduce,
-## whenever we run the simulation under that configuration, the same result 
+## This file launches all the simulation scenarios considered. 
+## Above of each scenario a seed is set to reproduce the same analyses we did. 
 ################################################################################
 
-## Packages --------------------------------------------------------------------
-# Loading of necessary packages:
-library(coxed)
-library(survival)
-library(purrr)
-library(furrr) # Apply Mapping Functions in Parallel using Futures
-library(BeSS) # Version 1.06
-library(glmnet)
-library(rpart)
-library(party)
-library(partykit)
-library(tidyr)
-library(stringr)
-library(survcomp) # concordance.index
-library(pec) #  predictSurvProb
-library(caret) #  confusionMatrix
-library(survAUC) # AUC.sh etc..
-library(rlist) # list.append
-library(matlib) # for QR descomposition
-library(ggplot2)
-library(gridExtra)
-library(MASS) # mvrnorm
-library(tidyverse)
-library(InformationValue)
-library(RColorBrewer)
-library(coxme)
-library(grpreg)
-library(CoxBoost)
-library(extraDistr)
-library(ggnewscale)
 
-## Functions --------------------------------------------------------------------
-## Sourcing of needed functions:
+## Packages ---------------------------------------------------------------
+library(extraDistr) ## rtpois()
 
 # Scenario 2 --------------------------------------------------------------
 ## Fixed parameters
@@ -59,7 +27,7 @@ censorship <- 0.75
 ## Parameters:
 cluster_num <- 22
 set.seed(10)
-cluster_sizes <-  rtpois(22, lambda = 3, a = 0, b = Inf) ## extraDistr, truncated poisson 
+cluster_sizes <- rtpois(22, lambda = 3, a = 0, b = Inf) ## truncated poisson 
 Nobs <- sum(cluster_sizes) ## 60
 
 set.seed(22) 
@@ -82,7 +50,7 @@ source("Code/Main.R")
 ## Parameters:
 cluster_num <- 22*3
 set.seed(10) 
-cluster_sizes <-  rtpois(22 * 3, lambda = 3, a = 0, b = Inf) ## extraDistr, truncated poisson 
+cluster_sizes <- rtpois(22 * 3, lambda = 3, a = 0, b = Inf) ## truncated poisson 
 Nobs <- sum(cluster_sizes) ## 191
 
 set.seed(22) 
@@ -106,7 +74,7 @@ source("Code/Main.R")
 ## Parameters:
 cluster_num <- 22*6
 set.seed(10) 
-cluster_sizes <-  rtpois(22 * 6, lambda = 3, a = 0, b = Inf) ## extraDistr, truncated poisson 
+cluster_sizes <- rtpois(22 * 6, lambda = 3, a = 0, b = Inf) ## truncated poisson 
 Nobs <- sum(cluster_sizes) ## 391
 
 set.seed(22) 
@@ -129,7 +97,7 @@ source("Code/Main.R")
 ## Parameters:
 cluster_num <- 22*10
 set.seed(10)
-cluster_sizes <-  rtpois(22*10, lambda = 3, a = 0, b = Inf) ## extraDistr, truncated poisson 
+cluster_sizes <- rtpois(22*10, lambda = 3, a = 0, b = Inf) ## truncated poisson 
 Nobs <- sum(cluster_sizes) ## 670
 
 set.seed(22) 
@@ -168,7 +136,7 @@ censorship <- 0.75
 ## Parameters:
 cluster_num <- 22
 set.seed(10) 
-cluster_sizes <-  rtpois(22, lambda = 3, a = 0, b = Inf) ## extraDistr, truncated poisson 
+cluster_sizes <- rtpois(22, lambda = 3, a = 0, b = Inf) ## truncated poisson 
 Nobs <- sum(cluster_sizes) ## 60
 
 set.seed(22) 
@@ -191,7 +159,7 @@ source("Code/Main.R")
 ## Parameters: 
 cluster_num <- 22*3
 set.seed(10)
-cluster_sizes <-  rtpois(22 * 3, lambda = 3, a = 0, b = Inf) ## extraDistr, truncated poisson 
+cluster_sizes <- rtpois(22 * 3, lambda = 3, a = 0, b = Inf) ## truncated poisson 
 Nobs <- sum(cluster_sizes) ## 191
 
 set.seed(22) 
@@ -215,7 +183,7 @@ source("Code/Main.R")
 ## Parameters:
 cluster_num <- 22*6
 set.seed(10)
-cluster_sizes <-  rtpois(22 * 6, lambda = 3, a = 0, b = Inf) ## extraDistr, truncated poisson 
+cluster_sizes <- rtpois(22 * 6, lambda = 3, a = 0, b = Inf) ## truncated poisson 
 Nobs <- sum(cluster_sizes) ## 391
 
 set.seed(22) 
@@ -239,7 +207,7 @@ source("Code/Main.R")
 ## Parameters:
 cluster_num <- 22*10
 set.seed(10) 
-cluster_sizes <-  rtpois(22*10, lambda = 3, a = 0, b = Inf) ## extraDistr, truncated poisson 
+cluster_sizes <- rtpois(22*10, lambda = 3, a = 0, b = Inf) ## truncated poisson 
 Nobs <- sum(cluster_sizes) ## 670
 
 set.seed(22) 
@@ -256,4 +224,8 @@ dir <- paste0("Results/Scenario3/", name, "/")
 if (!dir.exists(dir)) dir.create(path = dir)
 set.seed(334)  
 source("Code/Main.R")
+
+
+
+
 
