@@ -78,7 +78,7 @@ generate.lm <- function(baseline, X=NULL, beta = NULL, N=1000, type="none", xvar
         w <- rep(cluster.frailty, times = cluster.sizes)
       }
       
-      XB <- X%*%beta ## Here we introduce the frailty term, i.e. the multiplicative random effect
+      XB <- X%*%beta ## We introduce here the frailty term, i.e. the multiplicative random effect
       #survival <- t(sapply(XB, FUN=function(x){baseline$survivor^(w*exp(x))}, simplify=TRUE))
       s_exp <- w*exp(XB)
       survival <- t(sapply(s_exp, FUN=function(x){baseline$survivor^(x)}, simplify=TRUE))
@@ -94,7 +94,6 @@ generate.lm <- function(baseline, X=NULL, beta = NULL, N=1000, type="none", xvar
     #survival <- t(sapply(XB, FUN=function(x){baseline$survivor^exp(x)}, simplify=TRUE))
     y <- apply(survival, 1, FUN=function(x){
       z <- diff(x < runif(1))
-      #z <- diff(x < runif(1, max = 0.05)) ## CHANGED, no finally the above is ok
       r <- ifelse(all(z==0), T, which.max(z))
       return(r)
     })
