@@ -161,24 +161,38 @@ coefs_estimated <- function(model, all_coefs) {
   return(res)
 } 
 mse <- function(hatbeta) sum((hatbeta-true_beta)^2)
+bias <- function(hatbeta) sum(hatbeta - true_beta)
+empSE <- function(hatbeta) sum((hatbeta - mean(hatbeta))^2)
 
 coefs_est_bess <- map2(fgaus_models_bess, all_coefs, function(x,y) coefs_estimated(x,y))
 mse_bess <- map(coefs_est_bess, mse)  
+bias_bess <- map(coefs_est_bess, bias)
+empSE_bess <- map(coefs_est_bess, empSE)
 # lasso 
 coefs_est_lasso <- map2(fgaus_models_lasso, all_coefs, function(x,y) coefs_estimated(x,y))
 mse_lasso <- map(coefs_est_lasso, mse)  
+bias_lasso <- map(coefs_est_lasso, bias)
+empSE_lasso <- map(coefs_est_lasso, empSE)
 ## enet
 coefs_est_enet <- map2(fgaus_models_enet, all_coefs, function(x,y) coefs_estimated(x,y))
-mse_enet <- map(coefs_est_enet, mse)  
+mse_enet <- map(coefs_est_enet, mse)
+bias_enet <- map(coefs_est_enet, bias)
+empSE_enet <- map(coefs_est_enet, empSE)
 ## ridge
 coefs_est_ridge <- map2(fgaus_models_ridge, all_coefs, function(x,y) coefs_estimated(x,y))
 mse_ridge <- map(coefs_est_ridge, mse)  
+bias_ridge <- map(coefs_est_ridge, bias)
+empSE_ridge <- map(coefs_est_ridge, empSE)
 ## grouplasso
 coefs_est_grouplasso <- map2(fgaus_models_grouplasso, all_coefs, function(x,y) coefs_estimated(x,y))
 mse_grouplasso <- map(coefs_est_grouplasso, mse)  
+bias_grouplasso <- map(coefs_est_grouplasso, bias)
+empSE_grouplasso <- map(coefs_est_grouplasso, empSE)
 ## coxboost
 coefs_est_coxboost <- map2(fgaus_models_coxboost, all_coefs, function(x,y) coefs_estimated(x,y))
 mse_coxboost <- map(coefs_est_coxboost, mse)  
+bias_coxboost <- map(coefs_est_coxboost, bias)
+empSE_coxboost <- map(coefs_est_coxboost, empSE)
 
 ## MSE
 mse_bess %>% reduce(rbind) %>% mean() %>% round(2)
@@ -187,6 +201,22 @@ mse_enet %>% reduce(rbind) %>% mean() %>% round(2)
 mse_ridge %>% reduce(rbind) %>% mean() %>% round(2)
 mse_grouplasso %>% reduce(rbind) %>% mean() %>% round(2)
 mse_coxboost %>% reduce(rbind) %>% mean() %>% round(2)
+
+## BIAS
+bias_bess %>% reduce(rbind) %>% mean() %>% round(2)
+bias_lasso %>% reduce(rbind) %>% mean() %>% round(2)
+bias_enet %>% reduce(rbind) %>% mean() %>% round(2)
+bias_ridge %>% reduce(rbind) %>% mean() %>% round(2)
+bias_grouplasso %>% reduce(rbind) %>% mean() %>% round(2)
+bias_coxboost %>% reduce(rbind) %>% mean() %>% round(2)
+
+## empSE
+empSE_bess %>% reduce(rbind) %>% mean() %>% sqrt() %>% round(2)
+empSE_lasso %>% reduce(rbind) %>% mean() %>% sqrt() %>% round(2)
+empSE_enet %>% reduce(rbind) %>% mean() %>% sqrt() %>%round(2)
+empSE_ridge %>% reduce(rbind) %>% mean() %>% sqrt() %>%round(2)
+empSE_grouplasso %>% reduce(rbind) %>% mean() %>% sqrt() %>% round(2)
+empSE_coxboost %>% reduce(rbind) %>% mean() %>% sqrt() %>% round(2)
 
 
 ## IBS ------------------------
