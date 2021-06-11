@@ -1,5 +1,5 @@
 ######################## Main_predictive_capacity.R #############################
-## It computes time prediction error curves (pec-s) or also known as, 
+## It computes prediction error curves (pec-s) or also known as, 
 ## time-dependent Brier Score-s, for each frailty model fitted.
 ## We use Boot632plus method for validating this predictive capacity. This is a
 ## linear combination of AppErr and BootCv using weights dependent on how the
