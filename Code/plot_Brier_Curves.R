@@ -22,11 +22,11 @@ mean_median_curves <- function(brier_dfs, times) {
 
 ## Plot settings
 theme_set(theme_bw() +
-            theme(axis.text = element_text(size=12),
-                  axis.title = element_text(size=14),
-                  legend.text = element_text(size=14),
+            theme(axis.text = element_text(size=25),
+                  axis.title = element_text(size=30),
+                  legend.text = element_text(size=24),
                   legend.title = element_blank(),
-                  title = element_text(size=15)))
+                  title = element_text(size=30)))
 
 plot_brier_curves <- function(b, title, ylim_up = 1) {
   ggplot() + 

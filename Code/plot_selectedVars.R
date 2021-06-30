@@ -65,9 +65,9 @@ plot_selectedVars <- function(ci = FALSE, CaseStudy = FALSE) {
     theme_bw() +
     theme(panel.grid=element_blank(),
           axis.text.x = element_text(size = 10),
-          axis.text.y = element_text(size = 22),
-          legend.text = element_text(size = 16),
-          legend.title = element_text(size = 20),
+          axis.text.y = element_text(size = 27),
+          legend.text = element_text(size = 19),
+          legend.title = element_text(size = 23),
           legend.key.size = unit(3.5, "lines")) 
   
 } 

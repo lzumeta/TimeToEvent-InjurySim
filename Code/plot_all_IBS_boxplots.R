@@ -31,9 +31,13 @@ for (i in 1:8) {
                                            pecBoot632plus_grouplasso, pecBoot632plus_coxboost, 
                                            splitMethod = "Boot632plusErr") +
            ggtitle(title) + ylim(0, 0.3)+
-           theme(axis.title.x=element_blank(),
-                 axis.text.x=element_blank(),
-                 axis.ticks.x=element_blank()))
+           theme(axis.title.x = element_blank(),
+                 axis.text.x = element_blank(),
+                 axis.text.y = element_text(size = 11),
+                 axis.ticks.x = element_blank(),
+                 legend.title = element_text(size = 18),
+                 legend.text = element_text(size = 16),
+                 title = element_text(size = 12)))
 }
 
 
@@ -46,7 +50,7 @@ plot <- ggarrange(plot3, plot1, plot2, plot4, plot7, plot5, plot6, plot8,
                   label.y = "IBS",
                   nrow = 2, ncol = 4, common.legend = TRUE, legend = "bottom")
 plot <- annotate_figure(plot,
-                        left = text_grob("IBS", size = 20, rot = 90),
+                        left = text_grob("IBS", size = 22, rot = 90),
 )
 ggexport(plot, filename = "Figures/IBS_boxplots.pdf", width = 12, height = 8)
 
