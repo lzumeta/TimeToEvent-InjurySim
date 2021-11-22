@@ -84,6 +84,6 @@ https://doi.org/10.1007/s10182-021-00428-2
 
 From: [https://link.springer.com/article/10.1007/s10182-021-00428-2/figures/1](https://link.springer.com/article/10.1007/s10182-021-00428-2/figures/1) <br/>
 
-**Supplementary Material**<br/>
+**Supplementary Material**<br/><br/>
 [https://github.com/lzumeta/TimeToEvent-InjurySim/SupplementaryMaterial/Zumeta-Olaskoaga2021-SupplementaryMaterial.pdf](https://github.com/lzumeta/TimeToEvent-InjurySim/blob/main/SupplementaryMaterial/Zumeta-Olaskoaga2021-SupplementaryMaterial.pdf)
 
