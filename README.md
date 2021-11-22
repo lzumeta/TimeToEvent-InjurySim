@@ -82,5 +82,8 @@ https://doi.org/10.1007/s10182-021-00428-2
 ![imga](https://user-images.githubusercontent.com/29726315/142850933-83bcbbbc-8b49-45f0-8290-7b703c5a5354.png)
 
 
-From: [https://link.springer.com/article/10.1007/s10182-021-00428-2/figures/1](https://link.springer.com/article/10.1007/s10182-021-00428-2/figures/1)
+From: [https://link.springer.com/article/10.1007/s10182-021-00428-2/figures/1](https://link.springer.com/article/10.1007/s10182-021-00428-2/figures/1) <br/>
+
+**Supplementary Material**<br/>
+[https://github.com/lzumeta/TimeToEvent-InjurySim/SupplementaryMaterial/Zumeta-Olaskoaga2021-SupplementaryMaterial.pdf](https://github.com/lzumeta/TimeToEvent-InjurySim/blob/main/SupplementaryMaterial/Zumeta-Olaskoaga2021-SupplementaryMaterial.pdf)
 
