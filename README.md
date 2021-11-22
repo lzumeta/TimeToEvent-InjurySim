@@ -62,9 +62,10 @@ It is noted that the code have dependencies. It open sources two **R** packages 
 └── 
 ```
 
-<br/>
+<br/><br/>
 
 ------------------
+
 
 ## Prediction of sports injuries in football: a recurrent time-to-event approach using regularized Cox models
 
@@ -74,7 +75,8 @@ Zumeta-Olaskoaga, L., Weigert, M., Larruskain, J., Bikandi, E., Setuain, I., Lek
 **DOI** <br/>
 https://doi.org/10.1007/s10182-021-00428-2
 
-![]()
+![imga](https://user-images.githubusercontent.com/29726315/142850933-83bcbbbc-8b49-45f0-8290-7b703c5a5354.png)
+
 
 
 
