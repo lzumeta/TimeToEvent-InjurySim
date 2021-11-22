@@ -1,14 +1,17 @@
 # Overview
 
-This is the accompanying code repository for the paper Zumeta-Olaskoaga, L., Weigert, M., Larruskain, J., Bikandi, E., Setuain, I., Lekue, J., … Lee, D.-J. (2021). [Prediction of sports injuries in football: a recurrent time-to-event approach using regularized Cox models.](https://rdcu.be/cBM1U) AStA Advances in Statistical Analysis, 1–26.
+This is the accompanying code repository for the paper: "Zumeta-Olaskoaga, L., Weigert, M., Larruskain, J., Bikandi, E., Setuain, I., Lekue, J., … Lee, D.-J. (2021). [Prediction of sports injuries in football: a recurrent time-to-event approach using regularized Cox models.](https://rdcu.be/cBM1U) *AStA Advances in Statistical Analysis, 1–26*. doi: 10.1007/s10182-021-00428-2" 
 
 It contains the R code for all relevant analyses in the paper, including the supplementary material. Real data and settings from the first scenario simulation, which are based on real data, are excluded, due to the data are not allowed to be freely available.
 
 It is noted that the code have dependencies. It open sources two **R** packages such as: `sim.survdata.R` function in `coxed` package ([https://cran.r-project.org/web/packages/coxed/index.html](https://cran.r-project.org/web/packages/coxed/index.html)) and `pec` function in `pec` package ([https://cran.r-project.org/web/packages/pec/index.html](https://cran.r-project.org/web/packages/pec/index.html)), both licensed under the GPL-2 and GPL-3 licenses, respectively.
 
+
 # File structure
 
 - Code
+
+- Supplementary Material
 
 - Results
   * Scenario2
@@ -58,3 +61,20 @@ It is noted that the code have dependencies. It open sources two **R** packages 
 │   └── Error_decrease.R
 └── 
 ```
+
+<br/>
+
+------------------
+
+## Prediction of sports injuries in football: a recurrent time-to-event approach using regularized Cox models
+
+**Citation** <br/>
+Zumeta-Olaskoaga, L., Weigert, M., Larruskain, J., Bikandi, E., Setuain, I., Lekue, J., … Lee, D.-J. (2021). Prediction of sports injuries in football: a recurrent time-to-event approach using regularized Cox models. *AStA Advances in Statistical Analysis*, 1–26. doi: 10.1007/s10182-021-00428-2
+
+**DOI** <br/>
+https://doi.org/10.1007/s10182-021-00428-2
+
+![]()
+
+
+
