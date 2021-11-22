@@ -75,6 +75,9 @@ Zumeta-Olaskoaga, L., Weigert, M., Larruskain, J., Bikandi, E., Setuain, I., Lek
 **DOI** <br/>
 https://doi.org/10.1007/s10182-021-00428-2
 
+**Keywords** <br/>
+Shared frailty models · Regularized Cox methods · Sports injury prevention · Survival analysis
+
 <br/>
 
 **Illustration of lower-limb injury data**: <br/><br/>
