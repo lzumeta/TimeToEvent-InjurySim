@@ -1,5 +1,5 @@
 # Overview
-g
+
 This is the accompanying code repository for the paper: "Zumeta-Olaskoaga, L., Weigert, M., Larruskain, J., Bikandi, E., Setuain, I., Lekue, J., … Lee, D.-J. (2021). [Prediction of sports injuries in football: a recurrent time-to-event approach using regularized Cox models.](https://doi.org/10.1007/s10182-021-00428-2) *AStA Advances in Statistical Analysis, 1–26*. doi: 10.1007/s10182-021-00428-2" 
 
 It contains the R code for all relevant analyses in the paper, including the supplementary material. Real data and settings from the first scenario simulation, which are based on real data, are excluded, due to the data are not allowed to be freely available.
