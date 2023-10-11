@@ -4,7 +4,7 @@ This is the accompanying code repository for the paper: "Zumeta-Olaskoaga, L., W
 
 It contains the R code for all relevant analyses in the paper, as well as the [supplementary material](https://github.com/lzumeta/TimeToEvent-InjurySim/blob/main/SupplementaryMaterial/Zumeta-Olaskoaga2021-SupplementaryMaterial.pdf). Real data and settings from the first scenario simulation (based on real data), are excluded because the data cannot be made publicly available.
 
-It is noted that the code have dependencies. It open sources two **R** packages such as: `sim.survdata.R` function in `coxed` package ([https://cran.r-project.org/web/packages/coxed/index.html](https://cran.r-project.org/web/packages/coxed/index.html)) and `pec` function in `pec` package ([https://cran.r-project.org/web/packages/pec/index.html](https://cran.r-project.org/web/packages/pec/index.html)), both licensed under the GPL-2 and GPL-3 licenses, respectively.
+The code have some dependencies. It open sources two **R** packages: `sim.survdata.R` function in `coxed` package ([https://cran.r-project.org/web/packages/coxed/index.html](https://cran.r-project.org/web/packages/coxed/index.html)) and `pec` function in `pec` package ([https://cran.r-project.org/web/packages/pec/index.html](https://cran.r-project.org/web/packages/pec/index.html)), both licensed under the GPL-2 and GPL-3 licenses, respectively.
 
 
 # File structure
