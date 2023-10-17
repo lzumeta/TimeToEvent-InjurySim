@@ -2,6 +2,6 @@
 .Rhistory
 .RData
 .Ruserdata
-.Rproj
+*.Rproj
 
 Figures/Fig1_screenshot.png
