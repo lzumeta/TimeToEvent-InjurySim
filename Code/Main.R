@@ -114,6 +114,10 @@ rm(est.bess, coefs.bess, vars.bess,
    coefs.grouplasso, vars.grouplasso,
    coefs.coxboost, vars.coxboost)
 
+## NEW
+p <- plot_selectedVars(ci = ci, CaseStudy = CaseStudy, title = expression("Setting 1, N"["obs"]*"= 60"))
+ggsave(filename = paste0(fig.dir, "SelectedVarsNEW.pdf"), p, width = 18, height = 10)
+
 ## Briers Curve Plot
 pdf(file = paste0(fig.dir, "Brier_Curves.pdf"), width = 12, height = 8)
 load(paste0(dir, "pecBoot632plus_", name, ".rds"))

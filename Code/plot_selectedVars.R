@@ -1,8 +1,9 @@
 library(magrittr)
 library(tidyverse)
 library(ggnewscale) ## new_scale_fill()
+library(RColorBrewer)
 
-plot_selectedVars <- function(ci = FALSE, CaseStudy = FALSE) {
+plot_selectedVars <- function(ci = FALSE, CaseStudy = FALSE, title = NULL) {
   
   ## How many non-zero variables are detected? 
   vars.bess.nonzero  <- apply(coefs.bess,  1, function(x) x != 0) %>% rowMeans()
@@ -26,7 +27,7 @@ plot_selectedVars <- function(ci = FALSE, CaseStudy = FALSE) {
     labels <- names(data)[9:ncol(data)]
     nrelev_vars <- ifelse(var_method == "BESS", 2, 
                           ifelse(var_method == "LASSO", 6, 4)
-                          )
+    )
   } else {
     labels <- paste0("X", 1:xvars)
     nrelev_vars <- 5
@@ -45,30 +46,54 @@ plot_selectedVars <- function(ci = FALSE, CaseStudy = FALSE) {
                               levels = c("vars.coxboost.nonzero", "vars.grouplasso.nonzero", "vars.ridge.nonzero", 
                                          "vars.enet.nonzero", "vars.lasso.nonzero", "vars.bess.nonzero"), 
                               label = c("Boosting", "Group Lasso", "Ridge", "Elastic Net", "Lasso", "BeSS")),
-           vars = factor(vars, levels = paste0("X", 1:xvars)))
+           vars = factor(vars, levels = paste0("X", 1:xvars)),
+           valueFac = cut(value, breaks = c(-1, 0.1, 0.3, 0.5, 0.7, 0.85, 1),
+                          labels = c("[0,0.1]", "(0.1,0.3]", "(0.3-0.5]", "(0.5-0.7]", "(0.7-0.85]", "(0.85-1]")))
   
-  mat_selected2_rev <- mat_selected2[mat_selected2$type == "relevant",]
+  mat_selected2_rev    <- mat_selected2[mat_selected2$type == "relevant",]
   mat_selected2_nonrev <- mat_selected2[mat_selected2$type == "nonrelevant",]
   
   ggplot(data = mat_selected2, aes(y = selection, x = vars)) +
     geom_tile(colour="white", size=0.7) + 
-    geom_tile(dat = mat_selected2_rev, aes(fill= value), colour="white", size=0.7) +
-    scale_fill_gradient(low = "white", high = "blue", name = "Frequency of selected\nrelevant variables",
-                        breaks = seq(0, 1, length.out = 11), limits = c(0,1)) +
-    new_scale_fill()+ 
-    geom_tile(dat = mat_selected2_nonrev, aes(fill= value), colour="white", size=0.7) +
-    scale_fill_gradient(low = "white", high = "red", name = "Frequency of selected\nnon-relevant variables",
-                        breaks = seq(0, 1, length.out = 11), limits = c(0,1)) +
+    geom_tile(dat = mat_selected2_rev, aes(fill= valueFac), colour="white", size=0.7) +
+    scale_fill_brewer(type = "seq", palette = "Greens", drop = FALSE,
+                      name = "Proportion of correctly selected variables  ") +
+    guides(
+      fill = guide_legend(
+        title.position = 'left',
+        keywidth = unit(6, 'cm'), nrow = 1,
+        label.position = "bottom")
+    ) +
+    new_scale_fill() + 
+    geom_tile(dat = mat_selected2_nonrev, aes(fill= valueFac), colour="white", size=0.7) +
+    scale_fill_brewer(type = "seq", palette = "Reds", drop = FALSE,
+                      name = "Proportion of wrongly selected variables  ") +
     xlab("") + ylab("") +
+    ggtitle(title) + 
     scale_x_discrete(position = "top") +
     coord_cartesian(expand=FALSE)  +
+    guides(
+      fill = guide_legend(
+        title.position = 'left',
+        keywidth = unit(6, 'cm'), nrow = 1,
+        label.position = "bottom")
+    ) +
     theme_bw() +
     theme(panel.grid=element_blank(),
-          axis.text.x = element_text(size = 10),
-          axis.text.y = element_text(size = 27),
-          legend.text = element_text(size = 19),
-          legend.title = element_text(size = 23),
-          legend.key.size = unit(3.5, "lines")) 
+          plot.title = element_text(size = rel(2.8)),
+          axis.text.x = element_text(size = rel(1.1)),
+          axis.text.y = element_text(size = rel(3)),
+          legend.position = "bottom",
+          legend.text = element_text(size = rel(2.2)),
+          legend.title = element_text(size = rel(2.8), vjust = 0.8),
+          legend.spacing.x = unit(0, "cm"),
+          legend.key.size = unit(2, "lines"),
+          legend.box = "vertical",
+          legend.justification = "left") 
   
 } 
+
+
+
+
 

@@ -1,4 +1,4 @@
-dir <- "Codes/Simulations/Results/Scenario3/"
+dir <- "Results/Scenario3/"
 name <- "Nsim_100_Nobs_670_cens_0.75_xvars_50_verylargesize"
 dir <- paste0(dir, name, "/")
 
@@ -67,7 +67,7 @@ fgaus_models_bess <- future_map2(vars.bess, dfs, function(var.bess, df) {
   )
   
   return(m_bess_fgaus)
-}, .options = future_options(seed = 123456L)) 
+}, .options = furrr_options(seed = 123456L)) 
 
 
 ## Lasso ------------------------------------------------------------------------
@@ -80,7 +80,7 @@ fgaus_models_lasso <- future_map2(vars.lasso, dfs, function(var.lasso, df) {
                          control = coxph.control(eps = 1e-11, iter.max = 500))
   
   return(m_lasso_fgaus)
-}, .options = future_options(seed = 123456L)) 
+}, .options = furrr_options(seed = 123456L)) 
 
 
 ## Enet ------------------------------------------------------------------------
@@ -93,7 +93,7 @@ fgaus_models_enet <- future_map2(vars.enet05, dfs, function(var.enet, df) {
                         control = coxph.control(eps = 1e-11, iter.max = 500)
   )
   return(m_enet_fgaus)
-}, .options = future_options(seed = 123456L)) 
+}, .options = furrr_options(seed = 123456L)) 
 
 
 ## Ridge ------------------------------------------------------------------------
@@ -106,7 +106,7 @@ fgaus_models_ridge <- future_map2(vars.ridge2, dfs, function(var.ridge, df) {
                          control = coxph.control(eps = 1e-11, iter.max = 500)
   )
   return(m_ridge_fgaus)
-}, .options = future_options(seed = 123456L)) 
+}, .options = furrr_options(seed = 123456L)) 
 
 
 ## GroupLasso ------------------------------------------------------------------------
@@ -119,7 +119,7 @@ fgaus_models_grouplasso <- future_map2(vars.grouplasso, dfs, function(var.groupl
                               control = coxph.control(eps = 1e-11, iter.max = 500)
   )
   return(m_grouplasso_fgaus)
-}, .options = future_options(seed = 123456L)) 
+}, .options = furrr_options(seed = 123456L)) 
 
 
 ## CoxBoost ------------------------------------------------------------------------
@@ -132,13 +132,13 @@ fgaus_models_coxboost <- future_map2(vars.coxboost, dfs, function(var.coxboost, 
                             control = coxph.control(eps = 1e-11, iter.max = 500)
   )
   return(m_coxboost_fgaus)
-}, .options = future_options(seed = 123456L)) 
+}, .options = furrr_options(seed = 123456L)) 
 
 
 ## MEASURES -------------------------
 # bess --------------------------------------------------------------------
-all_coefs <- lapply(1:100, function(i) as.vector(rep(0,28)))
-all_coefs <- map(all_coefs, function(cof) {names(cof) <- paste0("X", 1:28); return(cof)})
+all_coefs <- lapply(1:100, function(i) as.vector(rep(0,xvars)))
+all_coefs <- map(all_coefs, function(cof) {names(cof) <- paste0("X", 1:xvars); return(cof)})
 coefs_selected <- map(fgaus_models_bess, coef)
 coefs2 <- map2(all_coefs, coefs_selected, function(x,y) {
   x <- x[!(names(x) %in% names(y))]
@@ -150,8 +150,8 @@ coefs2 <- map2(all_coefs, coefs_selected, function(x,y) {
 mse1 <- map(coefs2, function(hatbeta) (hatbeta-true_beta)^2)
 
 ## make a function
-all_coefs <- lapply(1:100, function(i) as.vector(rep(0,28)))
-all_coefs <- map(all_coefs, function(cof) {names(cof) <- paste0("X", 1:28); return(cof)})
+all_coefs <- lapply(1:100, function(i) as.vector(rep(0,xvars)))
+all_coefs <- map(all_coefs, function(cof) {names(cof) <- paste0("X", 1:xvars); return(cof)})
 
 coefs_estimated <- function(model, all_coefs) {
   coefs_est <- coef(model)
@@ -211,12 +211,12 @@ bias_grouplasso %>% reduce(rbind) %>% mean() %>% round(2)
 bias_coxboost %>% reduce(rbind) %>% mean() %>% round(2)
 
 ## empSE
-empSE_bess %>% reduce(rbind) %>% mean() %>% sqrt() %>% round(2)
-empSE_lasso %>% reduce(rbind) %>% mean() %>% sqrt() %>% round(2)
-empSE_enet %>% reduce(rbind) %>% mean() %>% sqrt() %>%round(2)
-empSE_ridge %>% reduce(rbind) %>% mean() %>% sqrt() %>%round(2)
-empSE_grouplasso %>% reduce(rbind) %>% mean() %>% sqrt() %>% round(2)
-empSE_coxboost %>% reduce(rbind) %>% mean() %>% sqrt() %>% round(2)
+empSE_bess %>% reduce(rbind) %>% (\(x) sum(x)/(100-1))() %>% sqrt() %>% round(2)
+empSE_lasso %>% reduce(rbind) %>% (\(x) sum(x)/(100-1))() %>% sqrt() %>% round(2)
+empSE_enet %>% reduce(rbind) %>% (\(x) sum(x)/(100-1))() %>% sqrt() %>%round(2)
+empSE_ridge %>% reduce(rbind) %>% (\(x) sum(x)/(100-1))() %>% sqrt() %>%round(2)
+empSE_grouplasso %>% reduce(rbind) %>% (\(x) sum(x)/(100-1))() %>% sqrt() %>% round(2)
+empSE_coxboost %>% reduce(rbind) %>% (\(x) sum(x)/(100-1))() %>% sqrt() %>% round(2)
 
 
 ## IBS ------------------------

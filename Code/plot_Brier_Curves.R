@@ -21,14 +21,14 @@ mean_median_curves <- function(brier_dfs, times) {
 
 
 ## Plot settings
-theme_set(theme_bw() +
-            theme(axis.text = element_text(size=25),
-                  axis.title = element_text(size=30),
-                  legend.text = element_text(size=24),
-                  legend.title = element_blank(),
-                  title = element_text(size=30)))
+# theme_set(theme_bw() +
+#             theme(axis.text = element_text(size=25),
+#                   axis.title = element_text(size=30),
+#                   legend.text = element_text(size=24),
+#                   legend.title = element_blank(),
+#                   title = element_text(size=30)))
 
-plot_brier_curves <- function(b, title, ylim_up = 1) {
+plot_brier_curves <- function(b, title, ylim_up = NULL) {
   ggplot() + 
     #geom_step(aes(x = Brier_time, Brier_bsc, group = id), col = "grey", size = 0.1) + xlim(0, Tmax) + ylim(0,1) +
     geom_ribbon(aes(x = Brier_time, ymin = brier_2.5, ymax = brier_97.5), data =  b, fill = "grey90") +
@@ -36,10 +36,16 @@ plot_brier_curves <- function(b, title, ylim_up = 1) {
     geom_step(aes(x = Brier_time, brier_median,  col = "Median"), data = b, size = 0.4) + 
     geom_abline(intercept  = 0.33, slope = 0,  col = "gray23") +
     ylim(c(0,ylim_up)) +
-    xlab("Time") + ylab("Prediction error") + ggtitle(title) 
+    xlab("Time") + ylab("Prediction error") + ggtitle(title) +
+    theme_bw() +
+    theme(axis.text = element_text(size = rel(1.6)),
+          axis.title = element_text(size = rel(1.8)),
+          legend.text = element_text(size = rel(2.2)),
+          plot.title = element_text(size = rel(2)),
+          legend.title = element_blank())
 }
 
-plot_all_briers <- function(b0,b1,b2,b3,b4,b5,b6, stat = "median", ylim_up = 0.4, splitMethod, times) {
+plot_all_briers <- function(b0,b1,b2,b3,b4,b5,b6, stat = "median", ylim_up = NULL, splitMethod, times, title = NULL) {
   st <- ifelse(stat=="median", "brier_median", "brier_mean")
   ggplot() +
     geom_step(aes(x = Brier_time, get(st), color = "BeSS"), data  = b1) +
@@ -52,15 +58,23 @@ plot_all_briers <- function(b0,b1,b2,b3,b4,b5,b6, stat = "median", ylim_up = 0.4
     geom_abline(intercept  = 0.33, slope = 0,  col = "gray23") +
     scale_color_manual(values = c("BeSS" = "#1B9E77", "Lasso" = "#D95F02", "Elastic net" = "#7570B3", 
                                   "Ridge" = "#E7298A", "GroupLasso" = "#66A61E", "CoxBoost" = "#E6AB02", 
-                                  "Reference" = "black")) +
+                                  "Reference" = "black"), name = "Frailty models with\nvars. that selected") +
     xlim(0, times[[length(times)]]) + ylim(0, ylim_up) +
     xlab("Time") + ylab("Prediction error") + 
-    ggtitle(paste0(splitMethod, " Brier Scores ", stat,  "\nComparison of all methods")) 
+    # ggtitle(paste0(splitMethod, " Brier Scores ", stat,  "\nComparison of all methods")) +
+    ggtitle(title) +
+    theme_bw() +
+    theme(axis.text = element_text(size = rel(1.6)),
+          axis.title = element_text(size = rel(1.8)),
+          legend.text = element_text(size = rel(2.2)),
+          plot.title = element_text(size = rel(2)),
+          legend.title = element_text(size = rel(2.2)))
+    
 }
 
 
 ## Main plot function
-plot_Brier_Curves <- function(pec_bess, pec_lasso, pec_enet, pec_ridge, pec_grouplasso, pec_coxboost, splitMethod) {
+plot_Brier_Curves <- function(pec_bess, pec_lasso, pec_enet, pec_ridge, pec_grouplasso, pec_coxboost, splitMethod, title = NULL, ylim_up = 0.255) {
   
   ## check any convergence problem
   any_try_error <- function(pec) {
@@ -116,11 +130,11 @@ plot_Brier_Curves <- function(pec_bess, pec_lasso, pec_enet, pec_ridge, pec_grou
   b5 <- mean_median_curves(briers_grouplasso, times);
   b6 <- mean_median_curves(briers_coxboost, times);
   
-  ylim_up <- lapply(list(briers_bess, briers_lasso, briers_enet, briers_ridge, 
-                         briers_grouplasso, briers_coxboost),
-                    function(l) reduce(l, rbind)) %>% 
-    reduce(rbind) %>% 
-    max
+  # ylim_up <- lapply(list(briers_bess, briers_lasso, briers_enet, briers_ridge, 
+  #                        briers_grouplasso, briers_coxboost),
+  #                   function(l) reduce(l, rbind)) %>% 
+  #   reduce(rbind) %>% 
+  #   max
   
   ## Plots
   p1 <- plot_brier_curves(b1, paste0(splitMethod, " Brier Score of\nBeSS method"), ylim_up = ylim_up)
@@ -131,9 +145,9 @@ plot_Brier_Curves <- function(pec_bess, pec_lasso, pec_enet, pec_ridge, pec_grou
   p6 <- plot_brier_curves(b6, paste0(splitMethod, " Brier Score of\nCoxboost method"), ylim_up = ylim_up)
   
   grid.arrange(p1, p2, p3, p4, p5, p6, nrow = 3, ncol =2)
-  p6 <- plot_all_briers(b0=NULL,b1,b2,b3,b4,b5,b6, stat="mean", ylim_up, splitMethod = splitMethod, times = times)
+  p6 <- plot_all_briers(b0=NULL,b1,b2,b3,b4,b5,b6, stat="mean", ylim_up = ylim_up, splitMethod = splitMethod, times = times, title = title)
   print(p6)
-  p6 <- plot_all_briers(b0=NULL,b1,b2,b3,b4,b5,b6, stat="median", ylim_up, splitMethod = splitMethod, times = times)
+  p6 <- plot_all_briers(b0=NULL,b1,b2,b3,b4,b5,b6, stat="median", ylim_up = ylim_up, splitMethod = splitMethod, times = times, title = title)
   print(p6)
 }
 

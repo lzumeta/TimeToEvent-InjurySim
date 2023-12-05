@@ -10,7 +10,7 @@ dir <- paste0(dir, name, "/")
 load(paste0(dir, "Data_", name, ".rds"))
 load(paste0(dir, "pecBoot632plus_", name, ".rds"))
 
-p1 <-plot_Brier_Curves(pecBoot632plus_bess, pecBoot632plus_lasso, pecBoot632plus_enet, pecBoot632plus_ridge, 
+p1 <- plot_Brier_Curves(pecBoot632plus_bess, pecBoot632plus_lasso, pecBoot632plus_enet, pecBoot632plus_ridge, 
                        pecBoot632plus_grouplasso, pecBoot632plus_coxboost, 
                        splitMethod = "Boot632plusErr")
 
@@ -21,7 +21,7 @@ dir <- paste0(dir, name, "/")
 load(paste0(dir, "Data_", name, ".rds"))
 load(paste0(dir, "pecBoot632plus_", name, ".rds"))
 
-p2 <-plot_Brier_Curves(pecBoot632plus_bess, pecBoot632plus_lasso, pecBoot632plus_enet, pecBoot632plus_ridge, 
+p2 <- plot_Brier_Curves(pecBoot632plus_bess, pecBoot632plus_lasso, pecBoot632plus_enet, pecBoot632plus_ridge, 
                        pecBoot632plus_grouplasso, pecBoot632plus_coxboost, 
                        splitMethod = "Boot632plusErr")
 
@@ -38,7 +38,7 @@ dir <- paste0(dir, name, "/")
 load(paste0(dir, "Data_", name, ".rds"))
 load(paste0(dir, "pecBoot632plus_", name, ".rds"))
 
-p1 <-plot_Brier_Curves(pecBoot632plus_bess, pecBoot632plus_lasso, pecBoot632plus_enet, pecBoot632plus_ridge, 
+p1 <- plot_Brier_Curves(pecBoot632plus_bess, pecBoot632plus_lasso, pecBoot632plus_enet, pecBoot632plus_ridge, 
                        pecBoot632plus_grouplasso, pecBoot632plus_coxboost, 
                        splitMethod = "Boot632plusErr")
 
@@ -49,7 +49,7 @@ dir <- paste0(dir, name, "/")
 load(paste0(dir, "Data_", name, ".rds"))
 load(paste0(dir, "pecBoot632plus_", name, ".rds"))
 
-p2 <-plot_Brier_Curves(pecBoot632plus_bess, pecBoot632plus_lasso, pecBoot632plus_enet, pecBoot632plus_ridge, 
+p2 <- plot_Brier_Curves(pecBoot632plus_bess, pecBoot632plus_lasso, pecBoot632plus_enet, pecBoot632plus_ridge, 
                        pecBoot632plus_grouplasso, pecBoot632plus_coxboost, 
                        splitMethod = "Boot632plusErr")
 
